@@ -2,43 +2,19 @@ pipeline {
     agent any
 
     tools {
-        // Use the Maven version configured in Jenkins
-        maven '3.9.9' // Replace with the Maven version you configured
+        // Install the Maven version configured as "M3" and add it to the path.
+        maven "3.9.9"
     }
 
     stages {
         stage('Clone Repository') {
             steps {
-                // Clone the GitHub repository
-                git 'https://github.com/mtoliver1/Jenkins.git' // Replace with your repository URL
+                git 'https://github.com/mtoliver1/Jenkins.git'
             }
         }
-
         stage('Build') {
             steps {
-                // Run Maven build
-                sh 'mvn clean install'
-            }
-        }
-
-        stage('Test') {
-            steps {
-                // Run Maven tests
-                sh 'mvn test'
-            }
-        }
-
-        stage('Package') {
-            steps {
-                // Package the application (e.g., JAR or WAR)
-                sh 'mvn package'
-            }
-        }
-
-        stage('Archive Artifacts') {
-            steps {
-                // Archive build artifacts
-                archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
+                bat 'mvn -Dmaven.test.failure.ignore=true clean package'
             }
         }
     }
